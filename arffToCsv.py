@@ -11,7 +11,7 @@ import os
 # Getting all the arff files from the current directory
 files = [arff for arff in os.listdir('.') if arff.endswith(".arff")]
 
-def shrink(attr):
+def shrink(attr, delimiter=''):
     '''
     This function shrinks the attribute name into a single line
     : param attr: the string attribute to be shrinked
@@ -19,7 +19,7 @@ def shrink(attr):
     : return: the string shrinked
     '''
     if(len(attr) > 1):
-        return attr[0] + shrink(attr[1:])
+        return attr[0] + delimiter + shrink(attr[1:], delimiter=delimiter)
     else:
         return attr[0]
 
@@ -32,16 +32,22 @@ def toCsv(content, file_name=None):
         if not data:
             if "@attribute" in line:
                 attri = line.split()
-                if(len(attri) > 3):
+                if(len(attri) > 3 and attri[1] != 'id'):
                     attri = shrink(attri[1:-1])
-                columnName = attri[attri.index("@attribute")+1]
-                header = header + columnName + ";"
+                else:
+                    attri = attri[attri.index("@attribute")+1]
+                
+                header = header + attri + ";"
             elif "@data" in line:
                 data = True
                 header = header[:-1]
                 header += '\n'
                 newContent.append(header)
         else:
+            attr_size = len(header.split(';'))
+            other = line.split(',')[:attr_size-1]
+            last = line.split(',')[attr_size-1:]
+            line = shrink(other, delimiter=';') + ';' + shrink(last)
             newContent.append(line)
             
     if(file_name != None):
