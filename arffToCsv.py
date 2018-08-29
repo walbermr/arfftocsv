@@ -33,7 +33,7 @@ def toCsv(content, file_name=None):
             if "@attribute" in line:
                 attri = line.split()
                 if(len(attri) > 3 and attri[1] != 'id'):
-                    attri = shrink(attri[1:-1])
+                    attri = shrink(attri[1:-1], delimiter=' ')
                 else:
                     attri = attri[attri.index("@attribute")+1]
                 
