@@ -32,10 +32,15 @@ def toCsv(content):
     return newContent
 
 # Main loop for reading and writing files
-for file in files:
-    with open(file , "r") as inFile:
-        content = inFile.readlines()
-        name,ext = os.path.splitext(inFile.name)
-        new = toCsv(content)
-        with open(name+".csv", "w") as outFile:
-            outFile.writelines(new)
+def main():
+    for file in files:
+        with open(file , "r") as inFile:
+            content = inFile.readlines()
+            name,ext = os.path.splitext(inFile.name)
+            new = toCsv(content)
+            with open(name+".csv", "w") as outFile:
+                outFile.writelines(new)
+
+if __name__ == '__main__':
+    print('teste')
+    main()
